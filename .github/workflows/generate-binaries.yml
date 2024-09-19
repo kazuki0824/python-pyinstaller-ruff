@@ -1,21 +1,28 @@
 name: Build PyInstaller Binaries
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
   release:
     types:
       - created
+  workflow_dispatch:
+    inputs:
+      spec_location:
+        type: string
+        default: "./main.py"
+        description: "spec or py"
+      args:
+        type: string
+        default: "--onedir"
+        description: "Arguments to be passed to pyinstaller"
   workflow_call:
     inputs:
       spec_location:
         type: string
         default: "./main.py"
+        description: "spec or py"
       args:
         type: string
-        default: --onedir
+        default: "--onedir"
         description: "Arguments to be passed to pyinstaller"
 
 

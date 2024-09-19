@@ -30,7 +30,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Build with PyInstaller
-        uses: sayyid5416/pyinstaller-action@v1
+        uses: sayyid5416/pyinstaller@v1
         with:
           spec: ${{ inputs.spec_location }}
           requirements: requirements.txt

@@ -12,9 +12,10 @@ on:
     inputs:
       spec_location:
         type: string
-        required: true
+        default: "./main.py"
       args:
         type: string
+        default: --onedir
         description: "Arguments to be passed to pyinstaller"
 
 
@@ -33,9 +34,8 @@ jobs:
         uses: sayyid5416/pyinstaller@v1
         with:
           spec: ${{ inputs.spec_location }}
-          requirements: requirements.txt
+          requirements: ./requirements.txt
           options: ${{ inputs.args }}
-          python_ver: 3.10
           python_arch: x64
           exe_path: ./dist
           upload_exe_with_name: ${{ matrix.os }}-binary

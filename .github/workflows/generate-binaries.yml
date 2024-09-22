@@ -6,12 +6,20 @@ on:
       - created
   workflow_dispatch:
     inputs:
+      pack:
+        type: boolean
+        default: false
+        description: "Use UPX"
       args:
         type: string
         default: "--onedir"
         description: "Arguments to be passed to pyinstaller"
   workflow_call:
     inputs:
+      pack:
+        type: boolean
+        default: false
+        description: "Use UPX"
       args:
         type: string
         default: "--onedir"
@@ -43,6 +51,12 @@ jobs:
             echo "Expected exactly one .spec file, but found $count."
             exit 1
           fi
+
+      - name: Install UPX
+        uses: crazy-max/ghaction-upx@v3
+        if: ${{ inputs.pack }}
+        with:
+          install-only: true
 
       - name: Build with PyInstaller
         uses: sayyid5416/pyinstaller@v1

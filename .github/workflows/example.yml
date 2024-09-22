@@ -1,0 +1,19 @@
+name: Example
+
+on:
+  release:
+    types:
+      - created
+  workflow_dispatch:
+    inputs:
+      pack:
+        type: boolean
+        default: false
+        description: "Use UPX"
+      args:
+        type: string
+        description: "Arguments to be passed to pyinstaller"
+
+jobs:
+  create_executables:
+    uses: "./.github/workflows/generate-binaries.yml"

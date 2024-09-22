@@ -1,19 +1,7 @@
 name: Build PyInstaller Binaries
 
+
 on:
-  release:
-    types:
-      - created
-  workflow_dispatch:
-    inputs:
-      pack:
-        type: boolean
-        default: false
-        description: "Use UPX"
-      args:
-        type: string
-        default: "--onedir"
-        description: "Arguments to be passed to pyinstaller"
   workflow_call:
     inputs:
       pack:
@@ -22,9 +10,7 @@ on:
         description: "Use UPX"
       args:
         type: string
-        default: "--onedir"
         description: "Arguments to be passed to pyinstaller"
-
 
 jobs:
   build:

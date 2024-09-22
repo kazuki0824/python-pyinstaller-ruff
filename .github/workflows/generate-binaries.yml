@@ -6,20 +6,12 @@ on:
       - created
   workflow_dispatch:
     inputs:
-      spec_location:
-        type: string
-        default: "./main.py"
-        description: "spec or py"
       args:
         type: string
         default: "--onedir"
         description: "Arguments to be passed to pyinstaller"
   workflow_call:
     inputs:
-      spec_location:
-        type: string
-        default: "./main.py"
-        description: "spec or py"
       args:
         type: string
         default: "--onedir"
@@ -37,10 +29,25 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: Check if exactly one .spec file exists
+        id: check-spec
+        shell: bash
+        run: |
+          spec_file=$(find . -name "*.spec")
+          count=$(echo "$spec_file" | wc -l)
+          
+          if [ "$count" -eq 1 ]; then
+            echo "Exactly one .spec file found."
+            echo "::set-output name=spec_file::$spec_file"
+          else
+            echo "Expected exactly one .spec file, but found $count."
+            exit 1
+          fi
+
       - name: Build with PyInstaller
         uses: sayyid5416/pyinstaller@v1
         with:
-          spec: ${{ inputs.spec_location }}
+          spec: ${{ steps.check-spec.outputs.spec_file }}
           requirements: ./requirements.txt
           options: ${{ inputs.args }}
           python_arch: x64

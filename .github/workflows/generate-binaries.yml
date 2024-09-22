@@ -18,7 +18,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os: [ ubuntu-latest, windows-latest ]
 
     steps:
       - name: Checkout repository
@@ -53,9 +53,9 @@ jobs:
           options: ${{ inputs.args }}
           python_arch: x64
           exe_path: ./dist
-          upload_exe_with_name: ${{ matrix.os }}-binary
+          upload_exe_with_name: ${{ matrix.os }}
 
- # === Release Job ===
+  # === Release Job ===
   release:
     runs-on: ubuntu-latest
     needs: build
@@ -68,11 +68,20 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           path: dist
-          merge-multiple: true
+          merge-multiple: false
+
+      - name: Compress contents
+        run: |
+          for dir in ./dist/*/; do
+          folder_name=$(basename "$dir")
+          zip_file="${folder_name}-${{ github.ref }}.zip"
+          zip -r "$zip_file" "${dir}main/"
+          done
 
       - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
-          files: dist/*
+          files: ./*.zip
+          fail_on_unmatched_files: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -17,3 +17,5 @@ on:
 jobs:
   create_executables:
     uses: "./.github/workflows/generate-binaries.yml"
+    permissions:
+      contents: write

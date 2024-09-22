@@ -74,7 +74,7 @@ jobs:
         run: |
           for dir in ./dist/*/; do
           folder_name=$(basename "$dir")
-          zip_file="${folder_name}-${{ github.ref }}.zip"
+          zip_file="${folder_name}-${GITHUB_REF#refs/*/}.zip"
           zip -r "$zip_file" "${dir}main/"
           done
 

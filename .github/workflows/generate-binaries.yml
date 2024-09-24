@@ -71,11 +71,12 @@ jobs:
           merge-multiple: false
 
       - name: Compress contents
+        shell: bash
         run: |
           for dir in ./dist/*/; do
           folder_name=$(basename "$dir")
-          zip_file="${GITHUB_REPOSITORY#${GITHUB_REPOSITORY_OWNER}/}-${GITHUB_REF#refs/*/}.zip"
-          zip -r "$zip_file" "${dir}main/"
+          zip_file="${GITHUB_REPOSITORY#${GITHUB_REPOSITORY_OWNER}/}-${GITHUB_REF#refs/*/}-${folder_name}.zip"
+          zip -r "$zip_file" "${dir}*/"
           done
 
       - name: Create GitHub Release

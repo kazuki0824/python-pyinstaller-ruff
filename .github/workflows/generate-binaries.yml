@@ -76,7 +76,7 @@ jobs:
           for dir in ./dist/*/; do
           folder_name=$(basename "$dir")
           zip_file="${GITHUB_REPOSITORY#${GITHUB_REPOSITORY_OWNER}/}-${GITHUB_REF#refs/*/}-${folder_name}.zip"
-          zip -r "$zip_file" "${dir}*/"
+          zip -r "$zip_file" "${dir}"
           done
 
       - name: Create GitHub Release
